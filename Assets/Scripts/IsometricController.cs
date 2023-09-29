@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class IsometricController : MonoBehaviour
 {
-    private CharacterControloler _controller;
-    private float _horizxontal;
+    private CharacterController _controller;
+    private float _horizontal;
     private float _vertical;
 
     [SerializeField] private float playerSpeed = 5;
@@ -13,7 +13,7 @@ public class IsometricController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _controller = GetComponent <CharacterControloler>();
+        _controller = GetComponent <CharacterController>();
     }
 
     // Update is called once per frame
