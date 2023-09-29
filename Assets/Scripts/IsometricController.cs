@@ -28,6 +28,14 @@ public class IsometricController : MonoBehaviour
     {
         Vector3 direction = new Vector3(_horizontal, 0, _vertical);
 
-        _controller.Move(direction * playerSpeed * Time.deltaTime);
+        if(direction != Vector3.zero)
+        {
+           float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+
+            transform.rotation = Quaternion.Euler(0, targetAngle, 0);
+
+            _controller.Move(direction * playerSpeed * Time.deltaTime); 
+        } 
+
     }
 }
