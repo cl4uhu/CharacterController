@@ -71,23 +71,22 @@ public class SoulderController : MonoBehaviour
     void Movement()
     {
         Vector3 move = new Vector3(_horizontal, 0, _vertical).normalized; 
-        
-        Vector3 direction = new Vector3(_horizontal, 0, _vertical);
 
-        if(direction != Vector3.zero)
+        if(move != Vector3.zero)
         {
-           float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg; //movimiento
-           float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime); //movimiento suavizado, rotación actual a la que quiero llegar indicando su tiempo 
+           float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg + _camera.eulerAngles.y; //movimiento
+           
+           Vector3 desiredDirection = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
 
-            transform.rotation = Quaternion.Euler(0, smoothAngle, 0);
-
-            _controller.Move(direction.normalized * playerSpeed * Time.deltaTime); 
+            _controller.Move(desiredDirection * playerSpeed * Time.deltaTime); 
         } 
 
         xAxis.Update(Time.deltaTime);
         yAxis.Update(Time.deltaTime);
 
-        transform. rotation = Quaternion. Euler(0, xAxis.Value, 0);
+        transform.rotation = Quaternion.Euler(0, xAxis.Value, 0);
         _lookAtTransform.eulerAngles = new Vector3(yAxis.Value, xAxis.Value, 0);
+
     }
+
 }
