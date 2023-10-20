@@ -9,6 +9,7 @@ public class SoulderController : MonoBehaviour
     private float _horizontal;
     private float _vertical;
     private Transform _camera;
+    private Transform _lookAtTransform;
 
     //variables para velocidad, salto y gravedad
     [SerializeField] private float playerSpeed = 5;
@@ -30,14 +31,20 @@ public class SoulderController : MonoBehaviour
     [SerializeField] private AxisState yAxis;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        _controller = GetComponent<CharacterController>();
+        _camera = Camera.main.transform;
+        _lookAtTransform = GameObject.Find("LookAt").transform;
     }
 
     // Update is called once per frame
     void Update()
     {
+        _horizontal = Input.GetAxisRaw("Horizontal");
+        _vertical = Input.GetAxisRaw("Vertical");
+        
+        Movement();  
         Jump();
     }
 
@@ -59,5 +66,28 @@ public class SoulderController : MonoBehaviour
         _playerGravity.y += _gravity * Time.deltaTime;
 
         _controller.Move(_playerGravity * Time.deltaTime);
+    }
+
+    void Movement()
+    {
+        Vector3 move = new Vector3(_horizontal, 0, _vertical).normalized; 
+        
+        Vector3 direction = new Vector3(_horizontal, 0, _vertical);
+
+        if(direction != Vector3.zero)
+        {
+           float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg; //movimiento
+           float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime); //movimiento suavizado, rotación actual a la que quiero llegar indicando su tiempo 
+
+            transform.rotation = Quaternion.Euler(0, smoothAngle, 0);
+
+            _controller.Move(direction.normalized * playerSpeed * Time.deltaTime); 
+        } 
+
+        xAxis.Update(Time.deltaTime);
+        yAxis.Update(Time.deltaTime);
+
+        transform. rotation = Quaternion. Euler(0, xAxis.Value, 0);
+        _lookAtTransform.eulerAngles = new Vector3(yAxis.Value, xAxis.Value, 0);
     }
 }
