@@ -10,7 +10,9 @@ public class SoulderController : MonoBehaviour
     private float _vertical;
     private Transform _camera;
     private Transform _lookAtTransform;
-
+    public GameObject normalCamera;
+    public GameObject aimCamera;
+    
     //variables para velocidad, salto y gravedad
     [SerializeField] private float playerSpeed = 5;
     [SerializeField] private float _jumpHeight = 1; 
@@ -46,6 +48,18 @@ public class SoulderController : MonoBehaviour
         
         Movement();  
         Jump();
+
+        if (Input.GetButton("Fire2"))
+        {
+            normalCamera.SetActive(false);
+            aimCamera.SetActive(true);
+        }
+
+        else
+        {
+            normalCamera.SetActive(true);
+            aimCamera.SetActive(false);
+        }
     }
 
     void Jump()
@@ -86,7 +100,6 @@ public class SoulderController : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0, xAxis.Value, 0);
         _lookAtTransform.eulerAngles = new Vector3(yAxis.Value, xAxis.Value, 0);
-
     }
 
 }
