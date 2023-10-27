@@ -12,9 +12,10 @@ public class TPS_controller : MonoBehaviour
     //variables para velocidad, salto y gravedad
     [SerializeField] private float playerSpeed = 5;
     [SerializeField] private float _jumpHeight = 1; 
+    
     private float _gravity = -9.81f; 
     private Vector3 _playerGravity; 
-    
+   
     //variables para rotacion
     private float turnSmoothVelocity;
     [SerializeField] float turnSmoothTime = 0.1f; 
