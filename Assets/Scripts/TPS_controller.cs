@@ -8,6 +8,7 @@ public class TPS_controller : MonoBehaviour
     private float _horizontal;
     private float _vertical;
     private Transform _camera;
+    private Animator _animator;
 
     //variables para velocidad, salto y gravedad
     [SerializeField] private float playerSpeed = 5;
@@ -29,7 +30,8 @@ public class TPS_controller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _controller = GetComponent <CharacterController>();
+        _controller = GetComponent<CharacterController>();
+        _animator = GetComponentInChildren<Animator>();
         _camera = Camera.main.transform;
     }
 
@@ -54,6 +56,9 @@ public class TPS_controller : MonoBehaviour
     {
         Vector3 direction = new Vector3(_horizontal, 0, _vertical);
 
+       _animator.SetFloat("VelX", 0);
+        _animator.SetFloat("VelZ", direction.magnitude);
+        
         if(direction != Vector3.zero)
         {
            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + _camera.eulerAngles.y; //movimiento
@@ -70,6 +75,10 @@ public class TPS_controller : MonoBehaviour
     void AimMovement()
     {
         Vector3 direction = new Vector3(_horizontal, 0, _vertical);
+
+        _animator.SetFloat("VelX", _horizontal);
+        _animator.SetFloat("VelZ", _vertical);
+
         float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + _camera.eulerAngles.y; //movimiento
         float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _camera.eulerAngles.y, ref turnSmoothVelocity, turnSmoothTime); //movimiento suavizado, rotación actual a la que quiero llegar indicando su tiempo 
 
