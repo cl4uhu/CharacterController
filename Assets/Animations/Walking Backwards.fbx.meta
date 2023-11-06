@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: cc05ee22060a36b429777e9af5efefe6
+guid: 95d1b91cc5ca9ea4a800465cb937e88d
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Dying
+      name: Walk Back
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 138
+      lastFrame: 36
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
