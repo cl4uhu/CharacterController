@@ -9,6 +9,7 @@ public class TPS_controller : MonoBehaviour
     private float _vertical;
     private Transform _camera;
     private Animator _animator;
+    
 
     //variables para velocidad, salto y gravedad
     [SerializeField] private float playerSpeed = 5;
@@ -96,6 +97,11 @@ public class TPS_controller : MonoBehaviour
     {
         _isGrounded = Physics.CheckSphere(_sensorPosition.position, _sensorRadius, _groundLayer); 
 
+        if(Input.GetKey("space") && _isGrounded)
+        {
+            _animator.Play("Jump");
+        }
+        
         if(_isGrounded && _playerGravity.y < 0)
         {
             _playerGravity.y = 0;
