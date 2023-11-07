@@ -3,35 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-public class SoulderController : MonoBehaviour
+public class ShoulderController : MonoBehaviour
 {
-    private CharacterController _controller;
-    private float _horizontal;
-    private float _vertical;
-    private Transform _camera;
-    private Transform _lookAtTransform;
-    public GameObject normalCamera;
-    public GameObject aimCamera;
-    
-    //variables para velocidad, salto y gravedad
-    [SerializeField] private float playerSpeed = 5;
-    [SerializeField] private float _jumpHeight = 1; 
-    private float _gravity = -9.81f; 
-    private Vector3 _playerGravity; 
-    
-    //variables para rotacion
-    private float turnSmoothVelocity;
-    [SerializeField] float turnSmoothTime = 0.1f; 
+    CharacterController _controller;
+    Transform _camera;
+    Transform _lookAtTransform;
 
-    //variable para sensor
-    [SerializeField] private Transform _sensorPosition;
-    [SerializeField] private float _sensorRadius = 0.3f;
-    [SerializeField] private LayerMask _groundLayer;
-    private bool _isGrounded;
+    float _horizontal;
+    float _vertical;
 
-    [SerializeField] private AxisState xAxis;
-    [SerializeField] private AxisState yAxis;
+    public GameObject _cameraNormal;
+    public GameObject _aimCamera;
 
+
+
+    [SerializeField] float _playerSpeed = 5;
+
+    float _turnSmoothVelocity;
+    [SerializeField] float _turnSmoothTime = 0.1f;
+
+    [SerializeField] float _jumpHeigh = 1;
+    float _gravity = -9.81f;
+
+    Vector3 _playerGravity;
+    //variables sensor
+    [SerializeField] Transform _sensorPosition;
+    [SerializeField] float _sensorRadius = 0.2f;
+    [SerializeField] LayerMask _groundLayer;
+
+    bool _isGrounded;
+
+    [SerializeField] AxisState xAxis;
+    [SerializeField] AxisState yAxis;
     // Start is called before the first frame update
     void Awake()
     {
@@ -45,61 +48,56 @@ public class SoulderController : MonoBehaviour
     {
         _horizontal = Input.GetAxisRaw("Horizontal");
         _vertical = Input.GetAxisRaw("Vertical");
-        
-        Movement();  
-        Jump();
+        Movement(); 
+        Jump(); 
 
-        if (Input.GetButton("Fire2"))
+        if(Input.GetButton("Fire2"))
         {
-            normalCamera.SetActive(false);
-            aimCamera.SetActive(true);
+            _cameraNormal.SetActive(false);
+            _aimCamera.SetActive(true);
         }
-
         else
         {
-            normalCamera.SetActive(true);
-            aimCamera.SetActive(false);
+            _cameraNormal.SetActive(true);
+            _aimCamera.SetActive(false);
         }
     }
-
+    
     void Jump()
     {
-        _isGrounded = Physics.CheckSphere(_sensorPosition.position, _sensorRadius, _groundLayer); 
+        _isGrounded = Physics.CheckSphere(_sensorPosition.position, _sensorRadius, _groundLayer);
 
         if(_isGrounded && _playerGravity.y < 0)
         {
             _playerGravity.y = 0;
         }
-        
         if(_isGrounded && Input.GetButtonDown("Jump"))
         {
-            //_playerGravity.y = -_jumpHeight; 
-            _playerGravity.y = Mathf.Sqrt(_jumpHeight * -2 * _gravity); 
+            _playerGravity.y = Mathf.Sqrt(_jumpHeigh * -2 * _gravity);
         }
-
         _playerGravity.y += _gravity * Time.deltaTime;
-
+        
         _controller.Move(_playerGravity * Time.deltaTime);
     }
 
     void Movement()
     {
-        Vector3 move = new Vector3(_horizontal, 0, _vertical).normalized; 
-
-        if(move != Vector3.zero)
+        Vector3 direction = new Vector3(_horizontal, 0, _vertical);
+        
+        if(direction != Vector3.zero)
         {
-           float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg + _camera.eulerAngles.y; //movimiento
-           
-           Vector3 desiredDirection = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg +  _camera.eulerAngles.y;
 
-            _controller.Move(desiredDirection * playerSpeed * Time.deltaTime); 
-        } 
+            Vector3 moveDirection = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
+            _controller.Move(moveDirection.normalized * _playerSpeed * Time.deltaTime);
+        }
+        
+        Vector3 move = new Vector3(_horizontal, 0, _vertical).normalized;
 
         xAxis.Update(Time.deltaTime);
         yAxis.Update(Time.deltaTime);
 
         transform.rotation = Quaternion.Euler(0, xAxis.Value, 0);
-        _lookAtTransform.eulerAngles = new Vector3(yAxis.Value, xAxis.Value, 0);
+        _lookAtTransform.eulerAngles = new Vector3(yAxis.Value, transform.eulerAngles.y, 0);
     }
-
 }

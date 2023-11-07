@@ -2,63 +2,57 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FPSController : MonoBehaviour
+public class Isometriccontroller : MonoBehaviour
 {
     CharacterController _controller;
 
-    Transform _fpsCamera;
+    float _horizontal;
+    float _vertical;
 
-    [SerializeField] float _speed;
-    
-    [SerializeField] float _jumpHeight;
+    [SerializeField] float _playerSpeed = 5;
 
-    [SerializeField] float _sensivility = 200;
+    float _turnSmoothVelocity;
+    [SerializeField] float _turnSmoothTime = 0.1f;
 
-    float _xRotation = 0;
+    [SerializeField] float _jumpHeigh = 1;
+    float _gravity = -9.81f;
 
+    Vector3 _playerGravity;
+    //variables sensor
     [SerializeField] Transform _sensorPosition;
     [SerializeField] float _sensorRadius = 0.2f;
     [SerializeField] LayerMask _groundLayer;
 
     bool _isGrounded;
-
-    float _gravity = -9.81f;
-
-    Vector3 _playerGravity;
-    [SerializeField] float _jumpHeigh = 1;
-
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         _controller = GetComponent<CharacterController>();
-        _fpsCamera = Camera.main.transform;
     }
 
     // Update is called once per frame
     void Update()
     {
+        _horizontal = Input.GetAxisRaw("Horizontal");
+        _vertical = Input.GetAxisRaw("Vertical");
+
         Movement();
+
         Jump();
     }
 
     void Movement()
     {
-        float mouseX = Input.GetAxis("Mouse X") * _sensivility * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * _sensivility * Time.deltaTime;
-
-        _xRotation -= mouseY;
-        _xRotation = Mathf.Clamp(_xRotation, -90, 90);
-
-        _fpsCamera.localRotation = Quaternion.Euler(_xRotation, 0, 0);
-
-        transform.Rotate(Vector3.up * mouseX);
-
-        float x = Input.GetAxisRaw("Horizontal");
-        float z = Input.GetAxisRaw("Vertical");
-
-        Vector3 move = transform.right * x + transform.forward * z;
-
-        _controller.Move(move.normalized * _speed * Time.deltaTime);
+        Vector3 direction = new Vector3(_horizontal, 0, _vertical);
+        
+        if(direction != Vector3.zero)
+        {
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+            float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, _turnSmoothTime);
+            transform.rotation = Quaternion.Euler(0, smoothAngle, 0);
+            _controller.Move(direction.normalized * _playerSpeed * Time.deltaTime);
+        }
+        
     }
 
     void Jump()
