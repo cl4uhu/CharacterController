@@ -63,7 +63,7 @@ public class TPS_controller : MonoBehaviour
 
         Vector3 direction = new Vector3(_horizontal, 0, _vertical);
 
-       _animator.SetFloat("VelX", 0);
+        _animator.SetFloat("VelX", 0);
         _animator.SetFloat("VelZ", direction.magnitude);
         
         if(direction != Vector3.zero)
