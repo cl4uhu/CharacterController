@@ -105,12 +105,14 @@ public class TPS_controller : MonoBehaviour
         if(_isGrounded && _playerGravity.y < 0)
         {
             _playerGravity.y = 0;
+            //_animator.Play("Jump");
         }
         
         if(_isGrounded && Input.GetButtonDown("Jump"))
         {
             //_playerGravity.y = -_jumpHeight; 
-            _playerGravity.y = Mathf.Sqrt(_jumpHeight * -2 * _gravity); 
+            _playerGravity.y = Mathf.Sqrt(_jumpHeight * -2 * _gravity);
+            //_animator.Play("Jump"); 
         }
 
         _playerGravity.y += _gravity * Time.deltaTime;
