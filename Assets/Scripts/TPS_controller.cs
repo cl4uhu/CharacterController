@@ -9,7 +9,7 @@ public class TPS_controller : MonoBehaviour
     private float _vertical;
     private Transform _camera;
     private Animator _animator;
-    
+    private bool _playerlive = true;
 
     //variables para velocidad, salto y gravedad
     [SerializeField] private float playerSpeed = 5;
@@ -42,19 +42,25 @@ public class TPS_controller : MonoBehaviour
         _horizontal = Input.GetAxisRaw("Horizontal");
         _vertical = Input.GetAxisRaw("Vertical");
 
-        if(Input.GetButton("Fire2"))
+        if(Input.GetButton("Fire2") && _playerlive == true)
         {
             AimMovement();
         }
-        else
+        else if(_playerlive == true);
         {
             Movement();
         } 
 
-        Jump();
+        if(_playerlive == true)
+        {
+            Jump();
+        }
+
     }
     void Movement()
     {
+        if (!_playerlive) return;
+
         Vector3 direction = new Vector3(_horizontal, 0, _vertical);
 
        _animator.SetFloat("VelX", 0);
@@ -70,11 +76,14 @@ public class TPS_controller : MonoBehaviour
             Vector3 moveDirection = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
 
             _controller.Move(moveDirection.normalized * playerSpeed * Time.deltaTime); 
+
         } 
     }
 
     void AimMovement()
     {
+        if (!_playerlive) return;
+        
         Vector3 direction = new Vector3(_horizontal, 0, _vertical);
 
         _animator.SetFloat("VelX", _horizontal);
@@ -118,5 +127,14 @@ public class TPS_controller : MonoBehaviour
         _playerGravity.y += _gravity * Time.deltaTime;
 
         _controller.Move(_playerGravity * Time.deltaTime);
+    }
+
+    void OnTriggerEnter(Collider other) 
+    {
+        if(other.CompareTag("DeathZone"))
+        {
+            _playerlive = false;
+            _animator.Play("Death"); 
+        }
     }
 }

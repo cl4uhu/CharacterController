@@ -395,9 +395,9 @@ GameObject:
   - component: {fileID: 99943942}
   - component: {fileID: 99943941}
   - component: {fileID: 99943940}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Dead Zone
-  m_TagString: Untagged
+  m_TagString: DeathZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -417,7 +417,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -443,7 +443,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 2932c7b7a62d7684e9b48af41945de6c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -482,8 +482,8 @@ Transform:
   m_GameObject: {fileID: 99943939}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 56.44, y: 11.451431, z: 34.23}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 56.44, y: 12.1, z: 34.23}
+  m_LocalScale: {x: 3.4203, y: 2.4598, z: 3.7174}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 611664232}
@@ -630,7 +630,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5248d8af8a61e2b49839b1063a270842, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.17
+      value: 0.153
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5248d8af8a61e2b49839b1063a270842, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1146,9 +1146,9 @@ GameObject:
   - component: {fileID: 611664235}
   - component: {fileID: 611664234}
   - component: {fileID: 611664233}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Death Icon
-  m_TagString: Untagged
+  m_TagString: DeathZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1162,8 +1162,8 @@ Transform:
   m_GameObject: {fileID: 611664231}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.12999916, y: 5.558569, z: 0.004081726}
-  m_LocalScale: {x: 13.946322, y: 13.946322, z: 13.946322}
+  m_LocalPosition: {x: -0.03800867, y: 1.9960971, z: 0.0010980056}
+  m_LocalScale: {x: 4.0775137, y: 3.751638, z: 5.6697044}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 99943943}
@@ -1585,7 +1585,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 127
+    m_Bits: 383
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
