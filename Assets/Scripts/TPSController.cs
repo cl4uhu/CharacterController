@@ -142,6 +142,15 @@ public class TPSController : MonoBehaviour
         {
             Debug.Log(hit.transform.name);
             Debug.Log(hit.transform.position); 
+            //Destroy(hit.transform.gameObject);
+
+            Box caja = hit.transform.GetComponent<Box>(); 
+
+            if (caja != null)
+            {
+                caja.TakeDamage();
+            }
+            caja.TakeDamage(); 
         }
     }
 }
