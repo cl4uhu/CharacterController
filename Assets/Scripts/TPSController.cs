@@ -10,6 +10,8 @@ public class TPSController : MonoBehaviour
 
     float _horizontal;
     float _vertical;
+    //RayCast damage valor
+    public int shootDamage =2;
     public GameObject _cameraNormal;
     public GameObject _aimCamera;
 
@@ -148,9 +150,8 @@ public class TPSController : MonoBehaviour
 
             if (caja != null)
             {
-                caja.TakeDamage();
-            }
-            caja.TakeDamage(); 
+                caja.TakeDamage(shootDamage);
+            } 
         }
     }
 }

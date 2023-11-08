@@ -6,9 +6,9 @@ public class Box : MonoBehaviour
 {
     int vida = 5;
     
-    public void TakeDamage()
+    public void TakeDamage(int damage)
     {
-        vida--; 
+        vida -= damage; 
         
         if(vida <=0)
         {
