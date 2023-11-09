@@ -59,7 +59,7 @@ public class TPS_controller : MonoBehaviour
     }
     void Movement()
     {
-        if (!_playerlive) return;
+       if (!_playerlive) return;
 
         Vector3 direction = new Vector3(_horizontal, 0, _vertical);
 
