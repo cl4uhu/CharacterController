@@ -6,11 +6,11 @@ using UnityEngine;
 public class TPS_controller : MonoBehaviour
 {
     private CharacterController _controller;
-    private float _horizontal;
-    private float _vertical;
+    public float _horizontal;
+    public float _vertical;
     private Transform _camera;
     private Animator _animator;
-    //private bool _playerlive = true;
+    public bool _playerlive = true;
     TPS_controller _desactivatedscript;
 
 
@@ -25,15 +25,11 @@ public class TPS_controller : MonoBehaviour
     private float turnSmoothVelocity;
     [SerializeField] float turnSmoothTime = 0.1f;
 
-
     //variable para sensor
     [SerializeField] private Transform _sensorPosition;
     [SerializeField] private float _sensorRadius = 0.3f;
     [SerializeField] private LayerMask _groundLayer;
     private bool _isGrounded;
-
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -44,39 +40,31 @@ public class TPS_controller : MonoBehaviour
         _desactivatedscript = GetComponent<TPS_controller>();
     }
 
-
     // Update is called once per frame
     void Update()
     {
         _horizontal = Input.GetAxisRaw("Horizontal");
         _vertical = Input.GetAxisRaw("Vertical");
 
-
-        if(Input.GetButton("Fire2")) //&& _playerlive == true)
+        if(_playerlive == true)
         {
-            AimMovement();
+            if(Input.GetButton("Fire2"))
+            {
+                AimMovement();
+            }
+            else
+            {
+                Movement();
+            }
+
+            Jump();
         }
-        else //if(_playerlive == true);
-        {
-            Movement();
-        }
-
-
-        Jump();
-        /*if(_playerlive == true)
-        {
-           
-        }*/
-
 
     }
+    
     void Movement()
     {
-       //if (!_playerlive) return;
-
-
         Vector3 direction = new Vector3(_horizontal, 0, _vertical);
-
 
         _animator.SetFloat("VelX", 0);
         _animator.SetFloat("VelZ", direction.magnitude);
@@ -94,29 +82,21 @@ public class TPS_controller : MonoBehaviour
 
 
             _controller.Move(moveDirection.normalized * playerSpeed * Time.deltaTime);
-
-
         }
     }
 
-
     void AimMovement()
     {
-        //if (!_playerlive) return;
        
         Vector3 direction = new Vector3(_horizontal, 0, _vertical);
-
 
         _animator.SetFloat("VelX", _horizontal);
         _animator.SetFloat("VelZ", _vertical);
 
-
         float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + _camera.eulerAngles.y; //movimiento
         float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _camera.eulerAngles.y, ref turnSmoothVelocity, turnSmoothTime); //movimiento suavizado, rotación actual a la que quiero llegar indicando su tiempo
 
-
         transform.rotation = Quaternion.Euler(0, smoothAngle, 0);
-
 
         if(direction != Vector3.zero)
         {
@@ -157,12 +137,11 @@ public class TPS_controller : MonoBehaviour
         _controller.Move(_playerGravity * Time.deltaTime);
     }
 
-
     void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("DeathZone"))
         {
-            //_playerlive = false;
+            _playerlive = false;
             _animator.Play("Death");
             _desactivatedscript.enabled = false;
         }
