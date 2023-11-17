@@ -21,6 +21,8 @@ public class TPSController : MonoBehaviour
     [SerializeField] float _turnSmoothTime = 0.1f;
 
     [SerializeField] float _jumpHeigh = 1;
+    [SerializeField] private float _pushForce = 5;
+
     float _gravity = -9.81f;
 
     Vector3 _playerGravity;
@@ -153,5 +155,28 @@ public class TPSController : MonoBehaviour
                 caja.TakeDamage(shootDamage);
             } 
         }
+    }
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(_sensorPosition.position, _sensorRadius); 
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        Rigidbody body = hit.collider.attachedRigidbody; 
+        
+        if(body == null || body.isKinematic)
+        {
+            return;
+        }
+
+        if(hit.moveDirection.y < -0.2f)
+        {
+            return;
+        }
+
+        Vector3 pushDirection = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z); 
+        body.velocity = pushDirection * _pushForce;
     }
 }
