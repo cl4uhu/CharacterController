@@ -26,5 +26,4 @@ public class NewBehaviourScript : MonoBehaviour
             _controller.objectToGrab = collider.gameObject;
         }
     }
-
 }

@@ -694,6 +694,7 @@ GameObject:
   m_Component:
   - component: {fileID: 302347559}
   - component: {fileID: 302347560}
+  - component: {fileID: 302347561}
   m_Layer: 0
   m_Name: InteractionZone
   m_TagString: Untagged
@@ -737,6 +738,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1.1846993}
   m_Center: {x: 0, y: 0, z: 0.09234965}
+--- !u!114 &302347561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302347558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a29d43980fac65a438647a72820d3656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &360532242
 GameObject:
   m_ObjectHideFlags: 0
@@ -2542,7 +2555,7 @@ GameObject:
   - component: {fileID: 1244619858}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: Recogible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

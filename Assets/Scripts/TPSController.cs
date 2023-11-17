@@ -22,10 +22,13 @@ public class TPSController : MonoBehaviour
 
     [SerializeField] float _jumpHeigh = 1;
     [SerializeField] private float _pushForce = 5;
+    [SerializeField] private float _throwForce = 10;
 
     float _gravity = -9.81f;
 
     Vector3 _playerGravity;
+    private bool _isAiming;
+
     //variables sensor
     [SerializeField] Transform _sensorPosition;
     [SerializeField] float _sensorRadius = 0.2f;
@@ -55,10 +58,17 @@ public class TPSController : MonoBehaviour
         if(Input.GetButton("Fire2"))
         {
             AimMovement();
+            _isAiming = true;
         }
         else
         {
-            Movement();            
+            Movement();  
+            _isAiming = false;           
+        }
+
+        if(Input.GetButtonDown("Fire1") && grabedObject != null && _isAiming)
+        {
+            ThrowObject(); 
         }
         
         Jump();
@@ -205,5 +215,15 @@ public class TPSController : MonoBehaviour
             grabedObject.transform.SetParent(null);
             grabedObject = null;
         }
+    }
+
+    void ThrowObject()
+    {
+        Rigidbody grabedBody = grabedObject.GetComponent<Rigidbody>(); 
+
+        grabedBody.isKinematic = false; 
+        grabedObject.transform.SetParent(null);
+        grabedBody.AddForce(_camera.transform.forward * _throwForce, ForceMode.Impulse); 
+        grabedObject = null; 
     }
 }
