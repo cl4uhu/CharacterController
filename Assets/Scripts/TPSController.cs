@@ -32,6 +32,12 @@ public class TPSController : MonoBehaviour
     [SerializeField] LayerMask _groundLayer;
 
     bool _isGrounded;
+
+    //Variables para coger cosas
+    public GameObject objectToGrab;
+    private GameObject grabedObject;
+    [SerializeField] private Transform _interactionZone;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -45,7 +51,6 @@ public class TPSController : MonoBehaviour
     {
         _horizontal = Input.GetAxisRaw("Horizontal");
         _vertical = Input.GetAxisRaw("Vertical");
-
 
         if(Input.GetButton("Fire2"))
         {
@@ -61,6 +66,11 @@ public class TPSController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
            RayTest(); 
+        }
+        
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            GrabObject(); 
         }
     }
 
@@ -177,6 +187,23 @@ public class TPSController : MonoBehaviour
         }
 
         Vector3 pushDirection = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z); 
-        body.velocity = pushDirection * _pushForce;
+        body.velocity = pushDirection * _pushForce / body.mass;
+    }
+
+    void GrabObject()
+    {
+        if(objectToGrab != null && grabedObject == null)
+        {
+            grabedObject = objectToGrab;
+            grabedObject.transform.SetParent(_interactionZone);
+            grabedObject.transform.position = _interactionZone.position; 
+            grabedObject.GetComponent<Rigidbody>().isKinematic = true;
+        }
+        else if(grabedObject != null)
+        {
+            grabedObject.GetComponent<Rigidbody>().isKinematic = false;
+            grabedObject.transform.SetParent(null);
+            grabedObject = null;
+        }
     }
 }
